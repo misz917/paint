@@ -1,8 +1,14 @@
 use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
-use std::time::Instant;
 
-const WIDTH: usize = 800;
-const HEIGHT: usize = 600;
+const WIDTH: usize = 1200;
+const HEIGHT: usize = 800;
+const NAME: &str = "Adobu";
+
+pub mod app;
+pub mod canvas;
+pub mod common;
+pub mod shapes;
+pub mod ui;
 
 fn main() {
     // Create a buffer to store pixel data (RGB)
@@ -18,9 +24,6 @@ fn main() {
     .unwrap_or_else(|e| {
         panic!("{}", e);
     });
-
-    // Limit to max ~60 fps update rate
-    window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
     // Drawing state
     let mut is_drawing = false;
