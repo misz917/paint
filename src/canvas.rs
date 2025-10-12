@@ -37,13 +37,13 @@ impl Canvas {
 impl Index<(usize, usize)> for Canvas {
     type Output = u32;
 
-    fn index(&self, (row, col): (usize, usize)) -> &u32 {
-        &self.buffer[row * self.dimensions.x + col]
+    fn index(&self, (x, y): (usize, usize)) -> &u32 {
+        &self.buffer[y * self.dimensions.x + x]
     }
 }
 
 impl IndexMut<(usize, usize)> for Canvas {
-    fn index_mut(&mut self, (row, col): (usize, usize)) -> &mut u32 {
-        &mut self.buffer[row * self.dimensions.x + col]
+    fn index_mut(&mut self, (x, y): (usize, usize)) -> &mut u32 {
+        &mut self.buffer[y * self.dimensions.x + x]
     }
 }
