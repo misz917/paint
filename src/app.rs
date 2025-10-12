@@ -1,7 +1,10 @@
-use image::{DynamicImage, GenericImage, GenericImageView, Rgba};
-use minifb::{Window, WindowOptions};
+use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
-use crate::{canvas::Canvas, shapes::Shape, ui::UIElement};
+use crate::{
+    canvas::{self, Canvas},
+    shapes::Shape,
+    ui::UIElement,
+};
 
 pub struct App {
     window: Window,
@@ -17,21 +20,52 @@ impl App {
         height: usize,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         let window = Window::new(name, width, height, WindowOptions::default())?;
-        // let canvas: Vec<u32> = vec![0; width * height];
-        // let canvas = Canvas
+        let canvas = Canvas::new(width, height);
 
-        todo!()
+        let app = App {
+            window,
+            canvas,
+            ui: Vec::new(),
+            drawn_objects: Vec::new(),
+        };
+
+        Ok(app)
     }
 
     pub fn run(mut self) {
         self.setup();
-        self.main_loop();
-        self.destroy();
+        while self.window.is_open() {
+            self.handle_input();
+            self.update_screen();
+        }
     }
 
     fn setup(&mut self) {}
 
-    fn main_loop(&mut self) {}
+    fn handle_input(&mut self) {
+        // Get mouse state
+        let mouse_pos = self
+            .window
+            .get_mouse_pos(MouseMode::Clamp)
+            .unwrap_or((-1.0, -1.0));
 
-    fn destroy(&mut self) {}
+        // Check if left mouse button is pressed
+        let left_pressed = self.window.get_mouse_down(MouseButton::Left);
+
+        let brush_size = 5;
+        if left_pressed {
+            // self.canvas.get_buffer()
+            todo!()
+        }
+    }
+
+    fn update_screen(&mut self) {
+        self.window
+            .update_with_buffer(
+                self.canvas.get_buffer(),
+                self.canvas.get_x(),
+                self.canvas.get_y(),
+            )
+            .unwrap();
+    }
 }

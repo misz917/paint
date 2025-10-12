@@ -1,4 +1,5 @@
+#[derive(Clone, Copy, PartialEq)]
 pub struct XY<T> {
-    x: T,
-    y: T,
+    pub x: T,
+    pub y: T,
 }
