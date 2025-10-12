@@ -1,10 +1,6 @@
 use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
-use crate::{
-    canvas::{self, Canvas},
-    shapes::Shape,
-    ui::UIElement,
-};
+use crate::{canvas::Canvas, shapes::Shape, ui::UIElement};
 
 pub struct App {
     window: Window,
@@ -47,15 +43,15 @@ impl App {
         let mouse_pos = self
             .window
             .get_mouse_pos(MouseMode::Clamp)
-            .unwrap_or((-1.0, -1.0));
+            .unwrap_or((0.0, 0.0));
 
         // Check if left mouse button is pressed
         let left_pressed = self.window.get_mouse_down(MouseButton::Left);
 
-        let brush_size = 5;
+        let brush_color = 0x00FF00;
         if left_pressed {
-            // self.canvas.get_buffer()
-            todo!()
+            let mouse_pos_usize: (usize, usize) = (mouse_pos.0 as usize, mouse_pos.1 as usize);
+            self.canvas[mouse_pos_usize] = brush_color;
         }
     }
 
