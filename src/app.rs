@@ -1,6 +1,6 @@
 use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
-use crate::{canvas::Canvas, shapes::Shape, ui::UIElement};
+use crate::{canvas::Canvas, common::XY, shapes::Shape, ui::UIElement};
 
 pub struct App {
     window: Window,
@@ -64,4 +64,28 @@ impl App {
             )
             .unwrap();
     }
+}
+
+pub fn draw_dot<T, U>(canvas: &mut Canvas, point: XY<T>, radius: U)
+where
+    T: Into<usize> + Copy,
+    U: Into<usize> + Copy,
+{
+    todo!()
+}
+
+pub fn draw_line<T>(canvas: &mut Canvas, p1: XY<T>, p2: XY<T>)
+where
+    T: Into<usize> + Copy,
+{
+    let p1 = XY {
+        x: p1.x.into(),
+        y: p1.y.into(),
+    };
+    let p2 = XY {
+        x: p2.x.into(),
+        y: p2.y.into(),
+    };
+
+    todo!()
 }
