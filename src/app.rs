@@ -50,8 +50,11 @@ impl App {
 
         let brush_color = 0x00FF00;
         if left_pressed {
-            let mouse_pos_usize: (usize, usize) = (mouse_pos.0 as usize, mouse_pos.1 as usize);
-            self.canvas[mouse_pos_usize] = brush_color;
+            // let mouse_pos_usize: (usize, usize) = (mouse_pos.0 as usize, mouse_pos.1 as usize);
+            // self.canvas[mouse_pos_usize] = brush_color;
+
+            let (x, y): (usize, usize) = (mouse_pos.0 as usize, mouse_pos.1 as usize);
+            draw_dot(&mut self.canvas, XY { x, y }, 4 as usize, brush_color);
         }
     }
 
@@ -66,7 +69,7 @@ impl App {
     }
 }
 
-pub fn draw_dot<T, U>(canvas: &mut Canvas, point: XY<T>, radius: U)
+pub fn draw_dot<T, U>(canvas: &mut Canvas, point: XY<T>, radius: U, color: u32)
 where
     T: Into<usize> + Copy,
     U: Into<usize> + Copy,
@@ -78,11 +81,19 @@ where
     let radius: usize = radius.into();
 
     let x_distance = (2 * radius) - radius.saturating_sub(point.x);
-    let y_distance = 2 * radius;
+    let y_distance = (2 * radius) - radius.saturating_sub(point.y);
 
-    let start_x = point.x - radius;
-    let start_y = point.y - radius;
-    todo!()
+    let start_x = point.x.saturating_sub(radius);
+    let start_y = point.y.saturating_sub(radius);
+
+    for x in 0..x_distance {
+        for y in 0..y_distance {
+            // let distance = (((point.x + x).pow(2) + (point.y + y).pow(2)) as f32).sqrt();
+            // if distance < radius as f32 {
+            canvas[(x + start_x, y + start_y)] = color;
+            // }
+        }
+    }
 }
 
 pub fn draw_line<T>(canvas: &mut Canvas, p1: XY<T>, p2: XY<T>)
