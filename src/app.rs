@@ -71,6 +71,17 @@ where
     T: Into<usize> + Copy,
     U: Into<usize> + Copy,
 {
+    let point: XY<usize> = XY {
+        x: point.x.into(),
+        y: point.y.into(),
+    };
+    let radius: usize = radius.into();
+
+    let x_distance = (2 * radius) - radius.saturating_sub(point.x);
+    let y_distance = 2 * radius;
+
+    let start_x = point.x - radius;
+    let start_y = point.y - radius;
     todo!()
 }
 
