@@ -9,6 +9,7 @@ const NAME: &str = "Adobu";
 pub mod app;
 pub mod canvas;
 pub mod common;
+pub mod pencil;
 pub mod shapes;
 pub mod ui;
 
