@@ -45,8 +45,8 @@ impl App {
     fn setup(&mut self) {
         draw_line(
             &mut self.canvas,
-            XY::new(100, 200),
-            XY::new(200, 500),
+            XY::new(200, 200),
+            XY::new(800, 400),
             5,
             RED,
         );
@@ -120,10 +120,10 @@ pub fn draw_line(canvas: &mut Canvas, p1: XY<usize>, p2: XY<usize>, radius: usiz
     let length = ((long_vector.x.pow(2) + long_vector.y.pow(2)) as f32).sqrt();
     let short_vector = XY::new(long_vector.x as f32 / length, long_vector.y as f32 / length);
 
-    for step in 0..length as i32 {
+    for step in 0..=length as i32 {
         let point = XY::new(
-            (short_vector.x * step as f32) as usize,
-            (short_vector.y * step as f32) as usize,
+            (step as f32 * short_vector.x + p1.x as f32) as usize,
+            (step as f32 * short_vector.y + p1.y as f32) as usize,
         );
         draw_dot(canvas, point, radius, color);
     }
