@@ -1,6 +1,6 @@
 use std::ops::{Index, IndexMut};
 
-use crate::common::XY;
+use crate::{DEFAULT_CANVAS_COLOR, common::XY};
 
 pub struct Canvas {
     buffer: Vec<u32>,
@@ -10,7 +10,7 @@ pub struct Canvas {
 impl Canvas {
     pub fn new(x: usize, y: usize) -> Self {
         Canvas {
-            buffer: vec![0; x * y], // 0 is color black
+            buffer: vec![DEFAULT_CANVAS_COLOR; x * y],
             dimensions: XY { x, y },
         }
     }

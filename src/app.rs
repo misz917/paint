@@ -1,15 +1,20 @@
 use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
-use crate::{canvas::Canvas, common::XY, pencil::Pencil, ui::CanvasDrawable};
-
-const RED: u32 = 0xFF0000;
-const GREEN: u32 = 0x00FF00;
-const BLUE: u32 = 0x0000FF;
+use crate::{
+    canvas::Canvas,
+    colors::{GREEN, RED},
+    common::XY,
+    pencil::Pencil,
+    shapes::{
+        CanvasDrawable,
+        square::{self, Square},
+    },
+};
 
 pub struct App {
     window: Window,
     canvas: Canvas, // window requires a 1-dimension array but working with it sucks
-    ui: Vec<Box<dyn CanvasDrawable>>,
+    ui_objects: Vec<Box<dyn CanvasDrawable>>,
     drawn_objects: Vec<Box<dyn CanvasDrawable>>,
 }
 
@@ -25,7 +30,7 @@ impl App {
         let app = App {
             window,
             canvas,
-            ui: Vec::new(),
+            ui_objects: Vec::new(),
             drawn_objects: Vec::new(),
         };
 
@@ -36,18 +41,21 @@ impl App {
         self.setup();
         while self.window.is_open() {
             self.handle_input();
+            self.draw_ui();
             self.update_screen();
         }
     }
 
     fn setup(&mut self) {
-        Pencil::draw_line(
-            &mut self.canvas,
-            XY::new(200, 200),
-            XY::new(800, 400),
-            5,
-            RED,
-        );
+        let square = Square::new(XY::new(100, 100), XY::new(200, 200), 1, RED);
+        // self.drawn_objects.push(Box::new(square));
+        square.draw(&mut self.canvas);
+    }
+
+    fn draw_ui(&mut self) {
+        for element in self.ui_objects.iter() {
+            todo!()
+        }
     }
 
     fn handle_input(&mut self) {
@@ -71,8 +79,6 @@ impl App {
     }
 
     fn update_screen(&mut self) {
-        // place ui above drawings
-
         self.window
             .update_with_buffer(
                 self.canvas.get_buffer(),
