@@ -2,13 +2,17 @@ use std::{thread, time::Duration};
 
 use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
-use crate::{canvas::Canvas, common::XY, shapes::Shape, ui::UIElement};
+use crate::{
+    canvas::Canvas,
+    common::XY,
+    ui::{CanvasDrawable, UIElement},
+};
 
 pub struct App {
     window: Window,
     canvas: Canvas, // window requires a 1-dimension array but working with it sucks
-    ui: Vec<Box<dyn UIElement>>,
-    drawn_objects: Vec<Box<dyn Shape>>,
+    ui: Vec<Box<dyn CanvasDrawable>>,
+    drawn_objects: Vec<Box<dyn CanvasDrawable>>,
 }
 
 impl App {
@@ -61,6 +65,8 @@ impl App {
     }
 
     fn update_screen(&mut self) {
+        // place ui above drawings
+
         self.window
             .update_with_buffer(
                 self.canvas.get_buffer(),

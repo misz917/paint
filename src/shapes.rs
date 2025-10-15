@@ -1,6 +1,6 @@
-use crate::common::XY;
+use std::io::LineWriter;
 
-pub trait Shape {}
+use crate::{common::XY, ui::CanvasDrawable};
 
 pub struct TwoPoints {
     p1: XY<usize>,
@@ -10,16 +10,19 @@ pub struct TwoPoints {
 pub struct Line {
     points: TwoPoints,
 }
-impl Shape for Line {}
 
 pub struct Square {
     points: TwoPoints,
 }
-impl Shape for Square {}
 
 pub struct Circle {
     points: TwoPoints,
 }
-impl Shape for Circle {}
+
+impl CanvasDrawable for Line {
+    fn draw(&self, canvas: &mut crate::canvas::Canvas) {
+        todo!()
+    }
+}
 
 // points describe the shape and the position
