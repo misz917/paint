@@ -2,11 +2,11 @@ use std::{thread, time::Duration};
 
 use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
-use crate::{
-    canvas::Canvas,
-    common::XY,
-    ui::{CanvasDrawable, UIElement},
-};
+use crate::{canvas::Canvas, common::XY, ui::CanvasDrawable};
+
+const RED: u32 = 0xFF0000;
+const GREEN: u32 = 0x00FF00;
+const BLUE: u32 = 0x0000FF;
 
 pub struct App {
     window: Window,
@@ -42,7 +42,15 @@ impl App {
         }
     }
 
-    fn setup(&mut self) {}
+    fn setup(&mut self) {
+        draw_line(
+            &mut self.canvas,
+            XY::new(100, 200),
+            XY::new(200, 500),
+            5,
+            RED,
+        );
+    }
 
     fn handle_input(&mut self) {
         // Get mouse state
@@ -98,6 +106,25 @@ pub fn draw_dot(canvas: &mut Canvas, point: XY<usize>, radius: usize, color: u32
     }
 }
 
-pub fn draw_line(canvas: &mut Canvas, p1: XY<i32>, p2: XY<i32>) {
-    todo!()
+pub fn draw_line(canvas: &mut Canvas, p1: XY<usize>, p2: XY<usize>, radius: usize, color: u32) {
+    let p1 = XY {
+        x: p1.x as i32,
+        y: p1.y as i32,
+    };
+    let p2 = XY {
+        x: p2.x as i32,
+        y: p2.y as i32,
+    };
+
+    let long_vector = XY::new(p2.x - p1.x, p2.y - p1.y);
+    let length = ((long_vector.x.pow(2) + long_vector.y.pow(2)) as f32).sqrt();
+    let short_vector = XY::new(long_vector.x as f32 / length, long_vector.y as f32 / length);
+
+    for step in 0..length as i32 {
+        let point = XY::new(
+            (short_vector.x * step as f32) as usize,
+            (short_vector.y * step as f32) as usize,
+        );
+        draw_dot(canvas, point, radius, color);
+    }
 }
