@@ -17,15 +17,29 @@ impl CanvasDrawable for Circle {
 
         let radius = Math::distance_between_points(p1, p2);
 
-        for deg in 0..360 {
+        let mut prev_x = p1.x + radius;
+        let mut prev_y = p1.y;
+
+        for deg in 1..361 {
             let x = p1.x + radius * (deg as f32 * PI / 180.0).cos();
             let y = p1.y + radius * (deg as f32 * PI / 180.0).sin();
-            Pencil::draw_dot(
+
+            if x < 0.0 || y < 0.0 {
+                prev_x = x;
+                prev_y = y;
+                continue;
+            }
+
+            Pencil::draw_line(
                 canvas,
+                XY::new(prev_x as usize, prev_y as usize),
                 XY::new(x as usize, y as usize),
                 self.common.line_size,
                 self.common.color,
             );
+
+            prev_x = x;
+            prev_y = y;
         }
     }
 }
