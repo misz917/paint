@@ -12,6 +12,7 @@ pub mod colors;
 pub mod common;
 pub mod pencil;
 pub mod shapes;
+pub mod task;
 pub mod ui;
 
 fn main() {

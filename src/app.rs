@@ -6,6 +6,7 @@ use crate::{
     common::{CanvasDrawable, xy::XY},
     pencil::Pencil,
     shapes::{circle::Circle, line::Line, square::Square},
+    task::Task,
 };
 
 pub struct App {
@@ -13,6 +14,7 @@ pub struct App {
     canvas: Canvas, // window requires a 1-dimension array but working with it sucks
     ui_objects: Vec<Box<dyn CanvasDrawable>>,
     drawn_objects: Vec<Box<dyn CanvasDrawable>>,
+    task_queue: Vec<Task>,
 }
 
 impl App {
@@ -29,6 +31,7 @@ impl App {
             canvas,
             ui_objects: Vec::new(),
             drawn_objects: Vec::new(),
+            task_queue: Vec::new(),
         };
 
         Ok(app)
@@ -38,9 +41,17 @@ impl App {
         self.setup();
         while self.window.is_open() {
             self.handle_input();
+            self.handle_task_queue();
             self.draw_objects();
-            self.draw_ui();
             self.update_screen();
+        }
+    }
+
+    fn handle_task_queue(&mut self) {
+        while let Some(task) = self.task_queue.pop() {
+            match task {
+                _ => {}
+            }
         }
     }
 
@@ -57,11 +68,9 @@ impl App {
         for object in self.drawn_objects.iter() {
             object.draw(&mut self.canvas);
         }
-    }
 
-    fn draw_ui(&mut self) {
-        for element in self.ui_objects.iter() {
-            todo!()
+        for ui_element in self.ui_objects.iter() {
+            ui_element.draw(&mut self.canvas);
         }
     }
 
