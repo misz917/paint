@@ -3,9 +3,9 @@ use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 use crate::{
     canvas::Canvas,
     colors::{BLUE, GREEN, RED, YELLOW},
-    common::xy::XY,
+    common::{CanvasDrawable, xy::XY},
     pencil::Pencil,
-    shapes::{CanvasDrawable, circle::Circle, line::Line, square::Square},
+    shapes::{circle::Circle, line::Line, square::Square},
 };
 
 pub struct App {

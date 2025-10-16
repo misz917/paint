@@ -1,8 +1,8 @@
 use crate::{
     canvas::Canvas,
-    common::xy::XY,
+    common::{CanvasDrawable, xy::XY},
     pencil::Pencil,
-    shapes::{CanvasDrawable, Common},
+    shapes::Common,
 };
 
 pub struct Square {

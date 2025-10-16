@@ -1,4 +1,4 @@
-use crate::{canvas::Canvas, common::xy::XY};
+use crate::common::xy::XY;
 
 pub mod circle;
 pub mod line;
@@ -9,8 +9,4 @@ struct Common {
     p2: XY<usize>,
     line_size: usize,
     color: u32,
-}
-
-pub trait CanvasDrawable {
-    fn draw(&self, canvas: &mut Canvas);
 }

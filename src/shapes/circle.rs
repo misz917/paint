@@ -1,9 +1,9 @@
 use std::f32::consts::PI;
 
 use crate::{
-    common::{math::Math, xy::XY},
+    common::{CanvasDrawable, math::Math, xy::XY},
     pencil::Pencil,
-    shapes::{CanvasDrawable, Common},
+    shapes::Common,
 };
 
 pub struct Circle {
