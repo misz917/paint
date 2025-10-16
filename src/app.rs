@@ -5,12 +5,7 @@ use crate::{
     colors::{BLUE, GREEN, RED, YELLOW},
     common::xy::XY,
     pencil::Pencil,
-    shapes::{
-        CanvasDrawable,
-        circle::Circle,
-        line::Line,
-        square::{self, Square},
-    },
+    shapes::{CanvasDrawable, circle::Circle, line::Line, square::Square},
 };
 
 pub struct App {
