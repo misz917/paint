@@ -13,7 +13,7 @@ pub struct App {
     window: Window,
     canvas: Canvas, // window requires a 1-dimension array but working with it sucks
     ui_objects: Vec<Box<dyn CanvasDrawable>>,
-    drawn_objects: Vec<Box<dyn CanvasDrawable>>,
+    drawing_objects: Vec<Box<dyn CanvasDrawable>>,
     task_queue: Vec<Task>,
 }
 
@@ -30,7 +30,7 @@ impl App {
             window,
             canvas,
             ui_objects: Vec::new(),
-            drawn_objects: Vec::new(),
+            drawing_objects: Vec::new(),
             task_queue: Vec::new(),
         };
 
@@ -57,15 +57,15 @@ impl App {
 
     fn setup(&mut self) {
         let square = Square::new(XY::new(100, 100), XY::new(200, 200), 1, YELLOW);
-        self.drawn_objects.push(Box::new(square));
+        self.drawing_objects.push(Box::new(square));
         let line = Line::new(XY::new(500, 500), XY::new(800, 100), 4, BLUE);
-        self.drawn_objects.push(Box::new(line));
+        self.drawing_objects.push(Box::new(line));
         let circle = Circle::new(XY::new(200, 400), XY::new(500, 500), 2, RED);
-        self.drawn_objects.push(Box::new(circle));
+        self.drawing_objects.push(Box::new(circle));
     }
 
     fn draw_objects(&mut self) {
-        for object in self.drawn_objects.iter() {
+        for object in self.drawing_objects.iter() {
             object.draw(&mut self.canvas);
         }
 
