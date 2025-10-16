@@ -7,6 +7,7 @@ use crate::{
     pencil::Pencil,
     shapes::{
         CanvasDrawable,
+        circle::Circle,
         line::Line,
         square::{self, Square},
     },
@@ -53,6 +54,8 @@ impl App {
         self.drawn_objects.push(Box::new(square));
         let line = Line::new(XY::new(500, 500), XY::new(800, 100), 4, BLUE);
         self.drawn_objects.push(Box::new(line));
+        let circle = Circle::new(XY::new(200, 400), XY::new(500, 500), 2, RED);
+        self.drawn_objects.push(Box::new(circle));
     }
 
     fn draw_objects(&mut self) {
