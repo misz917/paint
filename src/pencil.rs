@@ -1,4 +1,4 @@
-use crate::{canvas::Canvas, common::XY};
+use crate::{canvas::Canvas, common::xy::XY};
 
 pub struct Pencil;
 

@@ -3,7 +3,7 @@ use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 use crate::{
     canvas::Canvas,
     colors::{GREEN, RED},
-    common::XY,
+    common::xy::XY,
     pencil::Pencil,
     shapes::{
         CanvasDrawable,

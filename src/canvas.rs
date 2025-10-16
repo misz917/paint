@@ -1,6 +1,6 @@
 use std::ops::{Index, IndexMut};
 
-use crate::{DEFAULT_CANVAS_COLOR, common::XY};
+use crate::{DEFAULT_CANVAS_COLOR, common::xy::XY};
 
 pub struct Canvas {
     buffer: Vec<u32>,

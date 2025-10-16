@@ -1,6 +1,6 @@
 use crate::{
     canvas::Canvas,
-    common::XY,
+    common::xy::XY,
     pencil::Pencil,
     shapes::{CanvasDrawable, Common},
 };
