@@ -4,7 +4,6 @@ use crate::{
     canvas::Canvas,
     colors::{BLUE, GREEN, RED, YELLOW},
     common::{CanvasDrawable, xy::XY},
-    pencil::Pencil,
     shapes::{circle::Circle, line::Line, square::Square},
     task::Task,
 };
@@ -12,8 +11,7 @@ use crate::{
 pub struct App {
     window: Window,
     canvas: Canvas, // window requires a 1-dimension array but working with it sucks
-    ui_objects: Vec<Box<dyn CanvasDrawable>>,
-    drawing_objects: Vec<Box<dyn CanvasDrawable>>,
+    canvas_objects: Vec<Box<dyn CanvasDrawable>>,
     task_queue: Vec<Task>,
 }
 
@@ -29,8 +27,7 @@ impl App {
         let app = App {
             window,
             canvas,
-            ui_objects: Vec::new(),
-            drawing_objects: Vec::new(),
+            canvas_objects: Vec::new(),
             task_queue: Vec::new(),
         };
 
@@ -42,7 +39,7 @@ impl App {
         while self.window.is_open() {
             self.handle_input();
             self.handle_task_queue();
-            self.draw_objects();
+            self.draw_canvas_objects();
             self.update_screen();
         }
     }
@@ -50,47 +47,46 @@ impl App {
     fn handle_task_queue(&mut self) {
         while let Some(task) = self.task_queue.pop() {
             match task {
-                _ => {}
+                Task::RedrawCanvasObjects => self.draw_canvas_objects(),
+                Task::SummonCanvasObject(canvas_drawable) => {
+                    self.canvas_objects.push(canvas_drawable)
+                }
+                Task::LeftMouse(xy) => todo!(),
             }
         }
     }
 
     fn setup(&mut self) {
         let square = Square::new(XY::new(100, 100), XY::new(200, 200), 1, YELLOW);
-        self.drawing_objects.push(Box::new(square));
+        self.canvas_objects.push(Box::new(square));
         let line = Line::new(XY::new(500, 500), XY::new(800, 100), 4, BLUE);
-        self.drawing_objects.push(Box::new(line));
+        self.canvas_objects.push(Box::new(line));
         let circle = Circle::new(XY::new(200, 400), XY::new(500, 500), 2, RED);
-        self.drawing_objects.push(Box::new(circle));
+        self.canvas_objects.push(Box::new(circle));
     }
 
-    fn draw_objects(&mut self) {
-        for object in self.drawing_objects.iter() {
+    fn draw_canvas_objects(&mut self) {
+        for object in self.canvas_objects.iter() {
             object.draw(&mut self.canvas);
-        }
-
-        for ui_element in self.ui_objects.iter() {
-            ui_element.draw(&mut self.canvas);
         }
     }
 
     fn handle_input(&mut self) {
-        // Get mouse state
         let mouse_pos = self
             .window
             .get_mouse_pos(MouseMode::Clamp)
             .unwrap_or((0.0, 0.0));
 
-        // Check if left mouse button is pressed
         let left_pressed = self.window.get_mouse_down(MouseButton::Left);
 
-        let brush_color = GREEN;
         if left_pressed {
-            // let mouse_pos_usize: (usize, usize) = (mouse_pos.0 as usize, mouse_pos.1 as usize);
-            // self.canvas[mouse_pos_usize] = brush_color;
-
             let (x, y) = (mouse_pos.0 as usize, mouse_pos.1 as usize);
-            Pencil::draw_dot(&mut self.canvas, XY { x, y }, 3, brush_color);
+            let p1 = XY::new(x, y);
+            let p2 = XY::new(x + 5, y + 5);
+            self.task_queue
+                .push(Task::SummonCanvasObject(Box::new(Circle::new(
+                    p1, p2, 2, GREEN,
+                ))));
         }
     }
 

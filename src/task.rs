@@ -1,4 +1,7 @@
+use crate::common::{CanvasDrawable, xy::XY};
+
 pub enum Task {
-    RedrawUI,
-    RedrawObjects,
+    RedrawCanvasObjects,
+    SummonCanvasObject(Box<dyn CanvasDrawable>),
+    LeftMouse(XY<usize>),
 }
