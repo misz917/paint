@@ -2,11 +2,12 @@ use minifb::{MouseButton, MouseMode, Window, WindowOptions};
 
 use crate::{
     canvas::Canvas,
-    colors::{GREEN, RED},
+    colors::{BLUE, GREEN, RED, YELLOW},
     common::xy::XY,
     pencil::Pencil,
     shapes::{
         CanvasDrawable,
+        line::Line,
         square::{self, Square},
     },
 };
@@ -41,15 +42,23 @@ impl App {
         self.setup();
         while self.window.is_open() {
             self.handle_input();
+            self.draw_objects();
             self.draw_ui();
             self.update_screen();
         }
     }
 
     fn setup(&mut self) {
-        let square = Square::new(XY::new(100, 100), XY::new(200, 200), 1, RED);
-        // self.drawn_objects.push(Box::new(square));
-        square.draw(&mut self.canvas);
+        let square = Square::new(XY::new(100, 100), XY::new(200, 200), 1, YELLOW);
+        self.drawn_objects.push(Box::new(square));
+        let line = Line::new(XY::new(500, 500), XY::new(800, 100), 4, BLUE);
+        self.drawn_objects.push(Box::new(line));
+    }
+
+    fn draw_objects(&mut self) {
+        for object in self.drawn_objects.iter() {
+            object.draw(&mut self.canvas);
+        }
     }
 
     fn draw_ui(&mut self) {

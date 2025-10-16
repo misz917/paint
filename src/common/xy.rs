@@ -10,13 +10,11 @@ impl<T> XY<T> {
     }
 }
 
-impl<T> Into<f32> for XY<T>
-where
-    T: Into<f32> + Copy,
-{
-    fn into(self) -> f32 {
-        let x_f32: f32 = self.x.into();
-        let y_f32: f32 = self.y.into();
-        (x_f32.powi(2) + y_f32.powi(2)).sqrt()
+impl From<XY<usize>> for XY<f32> {
+    fn from(value: XY<usize>) -> Self {
+        XY {
+            x: value.x as f32,
+            y: value.y as f32,
+        }
     }
 }
