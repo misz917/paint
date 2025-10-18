@@ -1,4 +1,5 @@
 use minifb::{MouseButton, MouseMode, Window, WindowOptions};
+use std::collections::VecDeque;
 
 use crate::{
     canvas::Canvas,
@@ -12,7 +13,7 @@ pub struct App {
     window: Window,
     canvas: Canvas, // window requires a 1-dimension array but working with it sucks
     canvas_objects: Vec<Box<dyn CanvasDrawable>>,
-    task_queue: Vec<Task>,
+    task_queue: VecDeque<Task>,
 }
 
 impl App {
@@ -28,7 +29,7 @@ impl App {
             window,
             canvas,
             canvas_objects: Vec::new(),
-            task_queue: Vec::new(),
+            task_queue: VecDeque::new(),
         };
 
         Ok(app)
@@ -39,13 +40,12 @@ impl App {
         while self.window.is_open() {
             self.handle_input();
             self.handle_task_queue();
-            self.draw_canvas_objects();
             self.update_screen();
         }
     }
 
     fn handle_task_queue(&mut self) {
-        while let Some(task) = self.task_queue.pop() {
+        while let Some(task) = self.task_queue.pop_front() {
             match task {
                 Task::RedrawCanvasObjects => self.draw_canvas_objects(),
                 Task::SummonCanvasObject(canvas_drawable) => {
@@ -63,6 +63,7 @@ impl App {
         self.canvas_objects.push(Box::new(line));
         let circle = Circle::new(XY::new(200, 400), XY::new(500, 500), 2, RED);
         self.canvas_objects.push(Box::new(circle));
+        self.task_queue.push_back(Task::RedrawCanvasObjects);
     }
 
     fn draw_canvas_objects(&mut self) {
@@ -84,9 +85,10 @@ impl App {
             let p1 = XY::new(x, y);
             let p2 = XY::new(x + 5, y + 5);
             self.task_queue
-                .push(Task::SummonCanvasObject(Box::new(Circle::new(
+                .push_back(Task::SummonCanvasObject(Box::new(Circle::new(
                     p1, p2, 2, GREEN,
                 ))));
+            self.task_queue.push_back(Task::RedrawCanvasObjects);
         }
     }
 
